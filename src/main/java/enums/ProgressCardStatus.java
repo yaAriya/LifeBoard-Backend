@@ -1,7 +1,7 @@
 package enums;
 
-public enum CardStatus {
-    WANT(),
+public enum ProgressCardStatus {
+    WAITING(),
     IN_PROCESS(),
     DONE();
 }

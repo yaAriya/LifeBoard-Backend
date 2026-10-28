@@ -1,40 +1,40 @@
 package entity;
 
-import enums.CardStatus;
+import enums.ProgressCardStatus;
 
 import java.time.LocalDateTime;
 
 public class TaskCard extends Card {
-    private LocalDateTime dueDateTime;
-    private CardStatus status;
+    private LocalDateTime deadline;
+    private ProgressCardStatus status;
 
     public TaskCard() {
     }
 
-    public TaskCard(long id, String name, LocalDateTime dueDateTime, LocalDateTime createdAt, CardStatus status, User user) {
+    public TaskCard(long id, String name, LocalDateTime dueDateTime, LocalDateTime createdAt, ProgressCardStatus status, User user) {
         super(id, name, createdAt, user);
-        this.dueDateTime = dueDateTime;
+        this.deadline = dueDateTime;
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return getId() + "," + getName() + "," + dueDateTime + "," + getCreatedAt() + "," + status + "," + getUser();
+        return getId() + "," + getName() + "," + deadline + "," + getCreatedAt() + "," + status + "," + getUser();
     }
 
-    public LocalDateTime getDueDateTime() {
-        return dueDateTime;
+    public LocalDateTime getDeadline() {
+        return deadline;
     }
 
-    public void setDueDateTime(LocalDateTime dueDateTime) {
-        this.dueDateTime = dueDateTime;
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
-    public CardStatus getStatus() {
+    public ProgressCardStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CardStatus status) {
+    public void setStatus(ProgressCardStatus status) {
         this.status = status;
     }
 }

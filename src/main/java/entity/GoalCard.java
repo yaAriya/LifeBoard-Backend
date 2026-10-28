@@ -1,33 +1,32 @@
 package entity;
 
 import enums.CardCategory;
-import enums.CardPriority;
-import enums.CardStatus;
+import enums.ProgressCardStatus;
 
 import java.time.LocalDateTime;
 
 public class GoalCard extends Card {
     private CardCategory category;
-    private CardStatus status;
-    private CardPriority priority;
+    private ProgressCardStatus status;
     private int progress;
+    private LocalDateTime deadline;
 
     public GoalCard() {
     }
 
     public GoalCard(long id, String name, LocalDateTime createdAt, CardCategory category,
-                    CardStatus status, CardPriority priority, int progress, User user) {
+                    ProgressCardStatus status, int progress, LocalDateTime deadline, User user) {
         super(id, name, createdAt, user);
         this.category = category;
         this.status = status;
-        this.priority = priority;
         this.progress = progress;
+        this.deadline = deadline;
     }
 
     @Override
     public String toString() {
         return getId() + "," + getName() + "," + getCreatedAt() + "," + category + "," +
-                status + "," + priority + "," + progress + "," + getUser();
+                status + "," + progress + "," + getUser();
     }
 
     public CardCategory getCategory() {
@@ -38,20 +37,12 @@ public class GoalCard extends Card {
         this.category = category;
     }
 
-    public CardStatus getStatus() {
+    public ProgressCardStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CardStatus status) {
+    public void setStatus(ProgressCardStatus status) {
         this.status = status;
-    }
-
-    public CardPriority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(CardPriority priority) {
-        this.priority = priority;
     }
 
     public int getProgress() {
@@ -60,5 +51,13 @@ public class GoalCard extends Card {
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 }
