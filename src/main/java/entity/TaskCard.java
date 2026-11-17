@@ -1,9 +1,11 @@
 package entity;
 
 import enums.ProgressCardStatus;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class TaskCard extends Card {
     private LocalDateTime deadline;
     private ProgressCardStatus status;
@@ -11,7 +13,7 @@ public class TaskCard extends Card {
     public TaskCard() {
     }
 
-    public TaskCard(long id, String name, LocalDateTime dueDateTime, LocalDateTime createdAt, ProgressCardStatus status, User user) {
+    public TaskCard(Long id, String name, LocalDateTime dueDateTime, LocalDateTime createdAt, ProgressCardStatus status, User user) {
         super(id, name, createdAt, user);
         this.deadline = dueDateTime;
         this.status = status;

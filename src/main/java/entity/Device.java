@@ -2,22 +2,35 @@ package entity;
 
 import enums.DeviceStatus;
 import enums.DeviceType;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public class Device {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private DeviceType type;
+
+    @Enumerated(EnumType.STRING)
     private DeviceStatus status;
     private LocalDateTime lastActive;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Device() {
     }
 
-    public Device(long id, String name, DeviceType type, DeviceStatus status, LocalDateTime lastActive, User user) {
+    public Device(Long id, String name, DeviceType type, DeviceStatus status, LocalDateTime lastActive, User user) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -48,11 +61,11 @@ public class Device {
         return name + "," + name + "," + type + "," + status + "," + lastActive + "," + user;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,18 +1,28 @@
 package entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public abstract class Card {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Card() {
     }
 
-    public Card(long id, String name, LocalDateTime createdAt, User user) {
+    public Card(Long id, String name, LocalDateTime createdAt, User user) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
@@ -41,11 +51,11 @@ public abstract class Card {
         return name + "," + name + "," + createdAt + "," + user;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

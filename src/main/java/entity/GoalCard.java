@@ -2,9 +2,11 @@ package entity;
 
 import enums.CardCategory;
 import enums.ProgressCardStatus;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class GoalCard extends Card {
     private CardCategory category;
     private ProgressCardStatus status;
@@ -14,7 +16,7 @@ public class GoalCard extends Card {
     public GoalCard() {
     }
 
-    public GoalCard(long id, String name, LocalDateTime createdAt, CardCategory category,
+    public GoalCard(Long id, String name, LocalDateTime createdAt, CardCategory category,
                     ProgressCardStatus status, int progress, LocalDateTime deadline, User user) {
         super(id, name, createdAt, user);
         this.category = category;

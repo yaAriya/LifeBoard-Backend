@@ -1,11 +1,14 @@
 package enums;
 
+import jakarta.persistence.EnumeratedValue;
+
 public enum Language {
     ENGLISH("English"),
-    RUSSIAN("Русский"),
-    SPANISH("Español"),
-    FRENCH("Français");
+    RUSSIAN("Russian"),
+    SPANISH("Spanish"),
+    FRENCH("French");
 
+    @EnumeratedValue
     private final String value;
 
     Language(String value) {

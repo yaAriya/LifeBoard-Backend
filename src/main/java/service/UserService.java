@@ -1,13 +1,18 @@
 package service;
 
 import entity.User;
+import exception.UserServiceException;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> readAll();
-    void add(User user);
-    User read(long id);
-    void update(long id, User user);
-    void delete(User user);
+    List<User> readAll() throws UserServiceException;
+
+    void add(User user) throws UserServiceException;
+
+    User read(Long id) throws UserServiceException;
+
+    void update(User user) throws UserServiceException;
+
+    void delete(User user) throws UserServiceException;
 }

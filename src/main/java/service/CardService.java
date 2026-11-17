@@ -6,9 +6,14 @@ import java.util.List;
 
 public interface CardService {
     List<Card> readAll();
-    List<Card> readAllUserCards(long id);
+
+    List<Card> readAllUserCards(Long id);
+
     void add(Card card);
-    Card read(long id);
-    void update(long id, Card card);
+
+    Card read(Long id);
+
+    void update(Long id, Card card);
+
     void delete(Card card);
 }
