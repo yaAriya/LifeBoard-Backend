@@ -2,10 +2,12 @@ package entity;
 
 import enums.CardCategory;
 import enums.ProgressCardStatus;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
 
+@DiscriminatorValue("GOAL")
 @Entity
 public class GoalCard extends Card {
     private CardCategory category;
@@ -16,9 +18,9 @@ public class GoalCard extends Card {
     public GoalCard() {
     }
 
-    public GoalCard(Long id, String name, LocalDateTime createdAt, CardCategory category,
+    public GoalCard(Long id, String name, String content, LocalDateTime createdAt, CardCategory category,
                     ProgressCardStatus status, int progress, LocalDateTime deadline, User user) {
-        super(id, name, createdAt, user);
+        super(id, name, content, createdAt, user);
         this.category = category;
         this.status = status;
         this.progress = progress;
@@ -27,7 +29,7 @@ public class GoalCard extends Card {
 
     @Override
     public String toString() {
-        return getId() + "," + getName() + "," + getCreatedAt() + "," + category + "," +
+        return getId() + "," + getName() + "," + getContent() + "," + getCreatedAt() + "," + category + "," +
                 status + "," + progress + "," + getUser();
     }
 

@@ -1,10 +1,12 @@
 package entity;
 
 import enums.ProgressCardStatus;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
 
+@DiscriminatorValue("TASK")
 @Entity
 public class TaskCard extends Card {
     private LocalDateTime deadline;
@@ -13,15 +15,16 @@ public class TaskCard extends Card {
     public TaskCard() {
     }
 
-    public TaskCard(Long id, String name, LocalDateTime dueDateTime, LocalDateTime createdAt, ProgressCardStatus status, User user) {
-        super(id, name, createdAt, user);
+    public TaskCard(Long id, String name, String content, LocalDateTime dueDateTime, LocalDateTime createdAt, ProgressCardStatus status, User user) {
+        super(id, name, content, createdAt, user);
         this.deadline = dueDateTime;
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return getId() + "," + getName() + "," + deadline + "," + getCreatedAt() + "," + status + "," + getUser();
+        return getId() + "," + getName() + "," + getContent() + "," +
+                deadline + "," + getCreatedAt() + "," + status + "," + getUser();
     }
 
     public LocalDateTime getDeadline() {

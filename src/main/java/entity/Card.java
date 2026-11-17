@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "card_type", discriminatorType = DiscriminatorType.STRING)
 @Entity
 public abstract class Card {
     @Id
@@ -13,6 +15,9 @@ public abstract class Card {
 
     @Column(nullable = false)
     private String name;
+
+    private String content;
+
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -22,9 +27,10 @@ public abstract class Card {
     public Card() {
     }
 
-    public Card(Long id, String name, LocalDateTime createdAt, User user) {
+    public Card(Long id, String name, String content, LocalDateTime createdAt, User user) {
         this.id = id;
         this.name = name;
+        this.content = content;
         this.createdAt = createdAt;
         this.user = user;
     }
@@ -81,5 +87,13 @@ public abstract class Card {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

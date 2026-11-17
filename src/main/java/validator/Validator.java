@@ -1,9 +1,7 @@
 package validator;
 
-import entity.User;
-
 public interface Validator<T> {
-    boolean registerValidate(User user);
+    boolean registerValidate(T entity);
 
     boolean validate(T entity);
 

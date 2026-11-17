@@ -13,7 +13,7 @@ public interface CardDao {
 
     Card read(Long id);
 
-    void update(Long id, Card card);
+    void update(Card card);
 
     void delete(Card card);
 }

@@ -19,14 +19,13 @@ public class UserDaoImpl implements UserDao {
     public List<User> readAll() {
         return sessionFactory.getCurrentSession()
                 .createQuery("FROM User", User.class)
-                .list();
+                .getResultList();
     }
 
     @Transactional
     @Override
     public void add(User user) {
         sessionFactory.getCurrentSession().persist(user);
-        sessionFactory.getCurrentSession().flush();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User user) {
-        User updateUser = sessionFactory.getCurrentSession().get(User.class, user.getId());
+        User updateUser = read(user.getId());
         updateUser.setName(user.getName());
         updateUser.setAge(user.getAge());
         updateUser.setEmail(user.getEmail());

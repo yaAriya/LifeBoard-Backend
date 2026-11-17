@@ -36,7 +36,7 @@ public class UserValidator implements Validator<User> {
     }
 
     private boolean validateName(String name) {
-        return name != null;
+        return name != null && name.length() < 15;
     }
 
     private boolean validateAge(int age) {

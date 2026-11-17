@@ -3,8 +3,8 @@ package service;
 import dao.UserDao;
 import entity.User;
 import exception.InvalidEntityException;
-import exception.UserAlreadyExist;
 import exception.UserServiceException;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
             }
             return result;
         } catch (DataAccessException e) {
-            throw new UserServiceException();
+            throw new UserServiceException(e);
         }
     }
 
@@ -49,10 +49,10 @@ public class UserServiceImpl implements UserService {
             if (!validator.registerValidate(user)) {
                 throw new InvalidEntityException();
             } else if (users.contains(user)) {
-                throw new UserAlreadyExist();
+                throw new EntityExistsException();
             }
             userDao.add(user);
-        } catch (DataAccessException | InvalidEntityException | UserAlreadyExist e) {
+        } catch (DataAccessException | InvalidEntityException | EntityExistsException e) {
             throw new UserServiceException(e);
         }
     }
@@ -61,15 +61,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User read(Long id) throws UserServiceException {
         try {
-            if (id <= 0) {
-                throw new InvalidEntityException();
+            if (id == null || id <= 0) {
+                throw new IllegalArgumentException();
             }
             if (userDao.read(id) == null) {
                 throw new EntityNotFoundException();
             }
             return userDao.read(id);
-        } catch (InvalidEntityException | EntityNotFoundException e) {
-            throw new UserServiceException();
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            throw new UserServiceException(e);
         }
     }
 
