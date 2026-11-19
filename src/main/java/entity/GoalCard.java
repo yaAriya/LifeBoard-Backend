@@ -13,18 +13,16 @@ public class GoalCard extends Card {
     private CardCategory category;
     private ProgressCardStatus status;
     private int progress;
-    private LocalDateTime deadline;
 
     public GoalCard() {
     }
 
     public GoalCard(Long id, String name, String content, LocalDateTime createdAt, CardCategory category,
-                    ProgressCardStatus status, int progress, LocalDateTime deadline, User user) {
+                    ProgressCardStatus status, int progress, User user) {
         super(id, name, content, createdAt, user);
         this.category = category;
         this.status = status;
         this.progress = progress;
-        this.deadline = deadline;
     }
 
     @Override
@@ -55,13 +53,5 @@ public class GoalCard extends Card {
 
     public void setProgress(int progress) {
         this.progress = progress;
-    }
-
-    public LocalDateTime getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
     }
 }

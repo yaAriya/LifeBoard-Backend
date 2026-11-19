@@ -2,11 +2,12 @@ package service;
 
 import dao.CardDao;
 import entity.Card;
+import entity.GoalCard;
+import entity.TaskCard;
 import exception.CardServiceException;
 import exception.InvalidEntityException;
+import exception.NotFoundException;
 import exception.UserServiceException;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,14 +49,14 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<Card> readAllUserCards(Long id) throws CardServiceException {
         try {
+            if (userService.read(id) == null) {
+                throw new NotFoundException();
+            }
             if (id == null || id <= 0) {
                 throw new IllegalArgumentException();
             }
-            if (userService.read(id) == null) {
-                throw new EntityNotFoundException();
-            }
             return cardDao.readAllUserCards(id);
-        } catch (DataAccessException | IllegalArgumentException | EntityNotFoundException | UserServiceException e) {
+        } catch (DataAccessException | NotFoundException | IllegalArgumentException | UserServiceException e) {
             throw new CardServiceException(e);
         }
     }
@@ -64,15 +65,11 @@ public class CardServiceImpl implements CardService {
     @Override
     public void add(Card card) throws CardServiceException {
         try {
-            List<Card> cards = readAll();
             if (!validator.registerValidate(card)) {
                 throw new InvalidEntityException();
             }
-            if (cards.contains(card)) {
-                throw new EntityExistsException();
-            }
             cardDao.add(card);
-        } catch (DataAccessException | InvalidEntityException | EntityExistsException e) {
+        } catch (DataAccessException | InvalidEntityException e) {
             throw new CardServiceException(e);
         }
     }
@@ -81,13 +78,14 @@ public class CardServiceImpl implements CardService {
     @Override
     public Card read(Long id) throws CardServiceException {
         try {
+            if (cardDao.read(id) == null) {
+                throw new NotFoundException();
+            }
             if (id == null || id <= 0) {
                 throw new IllegalArgumentException();
-            } else if (cardDao.read(id) == null) {
-                throw new EntityNotFoundException();
             }
             return cardDao.read(id);
-        } catch (DataAccessException | IllegalArgumentException | EntityNotFoundException e) {
+        } catch (DataAccessException | NotFoundException | IllegalArgumentException e) {
             throw new CardServiceException(e);
         }
     }
@@ -96,14 +94,20 @@ public class CardServiceImpl implements CardService {
     @Override
     public void update(Card card) throws CardServiceException {
         try {
-            List<Card> cards = readAll();
+            if (read(card.getId()) == null) {
+                throw new NotFoundException();
+            }
             if (!validator.validate(card)) {
                 throw new InvalidEntityException();
-            } else if (!cards.contains(card)) {
-                throw new EntityNotFoundException();
             }
-            cardDao.update(card);
-        } catch (DataAccessException | InvalidEntityException | EntityNotFoundException e) {
+            Card updatedCard = setBasicProperty(card);
+            if (updatedCard instanceof TaskCard updatedTaskCard && card instanceof TaskCard taskCard) {
+                updatedTaskCard.setDeadline(taskCard.getDeadline());
+            } else if (updatedCard instanceof GoalCard updatedGoalCard && card instanceof GoalCard goalCard) {
+                updatedGoalCard.setCategory(goalCard.getCategory());
+            }
+            cardDao.update(updatedCard);
+        } catch (DataAccessException | NotFoundException | InvalidEntityException e) {
             throw new CardServiceException(e);
         }
     }
@@ -113,14 +117,22 @@ public class CardServiceImpl implements CardService {
     public void delete(Card card) throws CardServiceException {
         try {
             List<Card> cards = readAll();
+            if (!cards.contains(card)) {
+                throw new NotFoundException();
+            }
             if (!validator.validate(card)) {
                 throw new InvalidEntityException();
-            } else if (!cards.contains(card)) {
-                throw new EntityNotFoundException();
             }
             cardDao.delete(card);
-        } catch (DataAccessException | InvalidEntityException | EntityNotFoundException e) {
+        } catch (DataAccessException | NotFoundException | InvalidEntityException e) {
             throw new CardServiceException(e);
         }
+    }
+
+    public Card setBasicProperty(Card card) throws CardServiceException {
+        Card updateCard = read(card.getId());
+        updateCard.setName(card.getName());
+        updateCard.setContent(card.getContent());
+        return updateCard;
     }
 }

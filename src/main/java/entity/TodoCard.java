@@ -24,4 +24,12 @@ public class TodoCard extends Card {
     public String toString() {
         return getId() + "," + getName() + "," + getContent() + "," + getCreatedAt() + "," + status + "," + getUser();
     }
+
+    public CompletionCardStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CompletionCardStatus status) {
+        this.status = status;
+    }
 }

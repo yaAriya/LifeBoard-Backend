@@ -42,9 +42,7 @@ public class CardDaoImpl implements CardDao {
 
     @Override
     public void update(Card card) {
-        Card updateCard = read(card.getId());
-        updateCard.setName(card.getName());
-        updateCard.setContent(card.getContent());
+        sessionFactory.getCurrentSession().merge(card);
     }
 
     @Override

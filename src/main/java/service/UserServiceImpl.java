@@ -3,9 +3,8 @@ package service;
 import dao.UserDao;
 import entity.User;
 import exception.InvalidEntityException;
+import exception.NotFoundException;
 import exception.UserServiceException;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,14 +44,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(User user) throws UserServiceException {
         try {
-            List<User> users = readAll();
             if (!validator.registerValidate(user)) {
                 throw new InvalidEntityException();
-            } else if (users.contains(user)) {
-                throw new EntityExistsException();
             }
             userDao.add(user);
-        } catch (DataAccessException | InvalidEntityException | EntityExistsException e) {
+        } catch (DataAccessException | InvalidEntityException e) {
             throw new UserServiceException(e);
         }
     }
@@ -61,14 +57,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User read(Long id) throws UserServiceException {
         try {
+            if (userDao.read(id) == null) {
+                throw new NotFoundException();
+            }
             if (id == null || id <= 0) {
                 throw new IllegalArgumentException();
             }
-            if (userDao.read(id) == null) {
-                throw new EntityNotFoundException();
-            }
             return userDao.read(id);
-        } catch (IllegalArgumentException | EntityNotFoundException e) {
+        } catch (NotFoundException | IllegalArgumentException e) {
             throw new UserServiceException(e);
         }
     }
@@ -78,13 +74,14 @@ public class UserServiceImpl implements UserService {
     public void update(User user) throws UserServiceException {
         try {
             List<User> users = readAll();
+            if (!users.contains(user)) {
+                throw new NotFoundException();
+            }
             if (!validator.validate(user)) {
                 throw new InvalidEntityException();
-            } else if (!users.contains(user)) {
-                throw new EntityNotFoundException();
             }
             userDao.update(user);
-        } catch (DataAccessException | InvalidEntityException | EntityNotFoundException e) {
+        } catch (DataAccessException | NotFoundException | InvalidEntityException e) {
             throw new UserServiceException(e);
         }
     }
@@ -94,13 +91,14 @@ public class UserServiceImpl implements UserService {
     public void delete(User user) throws UserServiceException {
         try {
             List<User> users = readAll();
+            if (!users.contains(user)) {
+                throw new NotFoundException();
+            }
             if (!validator.validate(user)) {
                 throw new InvalidEntityException();
-            } else if (!users.contains(user)) {
-                throw new EntityNotFoundException();
             }
             userDao.delete(user);
-        } catch (DataAccessException | InvalidEntityException | EntityNotFoundException e) {
+        } catch (DataAccessException | NotFoundException | InvalidEntityException e) {
             throw new UserServiceException(e);
         }
     }
