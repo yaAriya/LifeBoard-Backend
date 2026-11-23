@@ -88,8 +88,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void delete(User user) throws UserServiceException {
+    public void delete(Long id) throws UserServiceException {
         try {
+            User user = read(id);
             List<User> users = readAll();
             if (!users.contains(user)) {
                 throw new NotFoundException();

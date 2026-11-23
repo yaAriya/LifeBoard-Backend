@@ -114,8 +114,9 @@ public class CardServiceImpl implements CardService {
 
     @Transactional
     @Override
-    public void delete(Card card) throws CardServiceException {
+    public void delete(Long id) throws CardServiceException {
         try {
+            Card card = read(id);
             List<Card> cards = readAll();
             if (!cards.contains(card)) {
                 throw new NotFoundException();

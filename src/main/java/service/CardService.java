@@ -16,5 +16,5 @@ public interface CardService {
 
     void update(Card card) throws CardServiceException;
 
-    void delete(Card card) throws CardServiceException;
+    void delete(Long id) throws CardServiceException;
 }
