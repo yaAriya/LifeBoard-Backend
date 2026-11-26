@@ -4,13 +4,17 @@ import enums.CardCategory;
 import enums.ProgressCardStatus;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 
-@DiscriminatorValue("GOAL")
+@DiscriminatorValue("Goal")
 @Entity
 public class GoalCard extends Card {
+    @Enumerated(EnumType.STRING)
     private CardCategory category;
+    @Enumerated(EnumType.STRING)
     private ProgressCardStatus status;
     private int progress;
 

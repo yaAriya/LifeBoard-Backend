@@ -18,7 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"main", "service", "dao", "entity", "validator"})
+@ComponentScan(basePackages = {"main", "service", "dao", "entity", "validator", "mapper"})
 @PropertySource("classpath:database.properties")
 public class RootConfig {
     @Value("${database.username}")

@@ -29,11 +29,11 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "theme", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'LIGHT'")
+    @Column(name = "theme", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'Light'")
     private Theme theme = Theme.LIGHT;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'ENGLISH'")
+    @Column(name = "language", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'English'")
     private Language language = Language.ENGLISH;
 
     @Enumerated(EnumType.STRING)
@@ -93,7 +93,7 @@ public class User {
             return false;
         }
         User user = (User) obj;
-        return user.id == id;
+        return user.id.equals(id);
     }
 
     @Override

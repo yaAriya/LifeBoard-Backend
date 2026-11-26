@@ -49,12 +49,12 @@ public abstract class Card {
             return false;
         }
         Card card = (Card) obj;
-        return card.id == id;
+        return card.id.equals(id);
     }
 
     @Override
     public String toString() {
-        return name + "," + name + "," + createdAt + "," + user;
+        return name + "," + createdAt + "," + user;
     }
 
     public Long getId() {

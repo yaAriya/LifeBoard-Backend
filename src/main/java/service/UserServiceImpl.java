@@ -5,7 +5,7 @@ import entity.User;
 import exception.InvalidEntityException;
 import exception.NotFoundException;
 import exception.UserServiceException;
-import org.springframework.dao.DataAccessException;
+import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import validator.UserValidator;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
             return result;
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             throw new UserServiceException(e);
         }
     }
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 throw new InvalidEntityException();
             }
             userDao.add(user);
-        } catch (DataAccessException | InvalidEntityException e) {
+        } catch (HibernateException | InvalidEntityException e) {
             throw new UserServiceException(e);
         }
     }
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
                 throw new InvalidEntityException();
             }
             userDao.update(user);
-        } catch (DataAccessException | NotFoundException | InvalidEntityException e) {
+        } catch (HibernateException | NotFoundException | InvalidEntityException e) {
             throw new UserServiceException(e);
         }
     }
@@ -91,15 +91,14 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) throws UserServiceException {
         try {
             User user = read(id);
-            List<User> users = readAll();
-            if (!users.contains(user)) {
+            if (user == null) {
                 throw new NotFoundException();
             }
             if (!validator.validate(user)) {
                 throw new InvalidEntityException();
             }
             userDao.delete(user);
-        } catch (DataAccessException | NotFoundException | InvalidEntityException e) {
+        } catch (HibernateException | NotFoundException | InvalidEntityException e) {
             throw new UserServiceException(e);
         }
     }

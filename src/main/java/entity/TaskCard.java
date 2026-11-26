@@ -3,13 +3,16 @@ package entity;
 import enums.ProgressCardStatus;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 
-@DiscriminatorValue("TASK")
+@DiscriminatorValue("Task")
 @Entity
 public class TaskCard extends Card {
     private LocalDateTime deadline;
+    @Enumerated(EnumType.STRING)
     private ProgressCardStatus status;
 
     public TaskCard() {

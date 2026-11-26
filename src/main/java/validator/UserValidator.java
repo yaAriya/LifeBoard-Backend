@@ -32,7 +32,7 @@ public class UserValidator implements Validator<User> {
     }
 
     private boolean validateId(Long id) {
-        return id != null || id > 0;
+        return id != null && id > 0;
     }
 
     private boolean validateName(String name) {
@@ -70,9 +70,9 @@ public class UserValidator implements Validator<User> {
         } else if (devices.size() > 10) {
             return false;
         }
-        Set<Long> set = new HashSet();
+        Set<Long> set = new HashSet<>();
         for (Device d : devices) {
-            if (d == null) {
+            if (d == null || d.getId()<=0) {
                 return false;
             }
             if (!set.add(d.getId())) {

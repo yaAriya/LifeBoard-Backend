@@ -25,7 +25,7 @@ public class CardDaoImpl implements CardDao {
     @Override
     public List<Card> readAllUserCards(Long id) {
         return sessionFactory.getCurrentSession()
-                .createQuery("FROM Card с WHERE с.user.id = :id", Card.class)
+                .createQuery("FROM Card c WHERE c.user.id = :id", Card.class)
                 .setParameter("id", id)
                 .getResultList();
     }

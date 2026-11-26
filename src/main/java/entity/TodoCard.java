@@ -4,12 +4,15 @@ package entity;
 import enums.CompletionCardStatus;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 
-@DiscriminatorValue("TODO")
+@DiscriminatorValue("Todo")
 @Entity
 public class TodoCard extends Card {
+    @Enumerated(EnumType.STRING)
     private CompletionCardStatus status;
 
     public TodoCard() {

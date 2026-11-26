@@ -1,6 +1,9 @@
 package validator;
 
 import entity.Card;
+import entity.GoalCard;
+import entity.TaskCard;
+import entity.TodoCard;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -9,13 +12,19 @@ import java.time.LocalDateTime;
 public class CardValidator implements Validator<Card> {
     @Override
     public boolean registerValidate(Card card) {
-        return registerValidateId(card.getId()) && validateName(card.getName())
+        return registerValidateId(card.getId())
+                && validateName(card.getName())
+                && validateContent(card.getContent())
+                && validateTypedProperties(card)
                 && validateCreatedAtTime(card.getCreatedAt());
     }
 
     @Override
     public boolean validate(Card card) {
-        return validateId(card.getId()) && validateName(card.getName())
+        return validateId(card.getId())
+                && validateName(card.getName())
+                && validateContent(card.getContent())
+                && validateTypedProperties(card)
                 && validateCreatedAtTime(card.getCreatedAt());
     }
 
@@ -32,7 +41,23 @@ public class CardValidator implements Validator<Card> {
     }
 
     private boolean validateContent(String content) {
-        return content != null && content.length() < 500;
+        return content == null || content.length() < 500;
+    }
+
+    private boolean validateTypedProperties(Card card) {
+        if (card instanceof TodoCard todoCard) {
+            return todoCard.getStatus() != null;
+        }
+        if (card instanceof TaskCard taskCard) {
+            return taskCard.getDeadline() != null && taskCard.getStatus() != null;
+        }
+        if (card instanceof GoalCard goalCard) {
+            return goalCard.getCategory() != null
+                    && goalCard.getStatus() != null
+                    && goalCard.getProgress() >= 0
+                    && goalCard.getProgress() <= 100;
+        }
+        return false;
     }
 
     private boolean validateCreatedAtTime(LocalDateTime time) {

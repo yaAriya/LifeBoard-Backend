@@ -53,7 +53,7 @@ public class Device {
             return false;
         }
         Device device = (Device) obj;
-        return device.id == id;
+        return device.id.equals(id);
     }
 
     @Override
